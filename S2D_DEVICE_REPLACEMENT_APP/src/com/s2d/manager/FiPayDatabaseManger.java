@@ -34,7 +34,7 @@ public class FiPayDatabaseManger {
 		}
 		return devicesOfHost;
 	}
-
+	
 	private int findAvailableId(ArrayList<FiPaySledBean> listOfDevices) {
 
 		Collections.sort(listOfDevices, new Comparator<FiPaySledBean>() {
@@ -44,8 +44,12 @@ public class FiPayDatabaseManger {
 			}
 		});
 		
-		
-		return 1;
+		int missingId = 1;
+		for(FiPaySledBean obj : listOfDevices) {
+			if(missingId != obj.getId()) break;
+			missingId++;
+		}
+		return missingId;
 	}
 
 	private FiPaySledBean createReplacementDeviceBean(FiPaySledBean actualDeviceBean, String replacementDevice) {
