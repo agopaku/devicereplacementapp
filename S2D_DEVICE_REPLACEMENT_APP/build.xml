@@ -1,0 +1,61 @@
+<project basedir="." name="S2D_DEVICE_REPLACEMENT">
+
+	<property name="sitebase" value="." />
+	<property name="build" location="${sitebase}/build" />
+	<property name="test-classes" value="${sitebase}/test-classes" />
+	<property name="lib" location="${sitebase}/lib" />
+	<property name="src" location="${sitebase}/src" />
+
+	<!-- Class Path Details -->
+	<path id="build.classpath">
+		<fileset dir="${lib}">
+			<include name="mysql-connector-java-5.1.45-bin.jar"/>
+			<include name="ojdbc8-12.2.0.1.jar"/>
+		</fileset>		
+	</path>
+
+	<target name="init">
+		<mkdir dir="${build}" />
+		<mkdir dir="${test-classes}" />
+	</target>
+
+	<!-- Clean the Build/Bin -->
+	<target name="clean">
+		<delete dir="${build}" failonerror="false" />
+		<delete dir="${test-classes}" failonerror="false" />
+	</target>
+
+	<!-- Compile the project -->
+	<target name="compile" depends="clean,init">
+		<javac destdir="${test-classes}" classpathref="build.classpath" debug="false" target="1.8" encoding="iso-8859-1">
+			<src path="${src}"/>
+		</javac>
+	</target>	
+	
+	<target name="set.db.properties">
+		<propertyfile
+		    file="db.properties"
+		    comment="Database Properties">
+		  <entry  key="HOSTNAME" value="${hostName}"/>
+		  <entry  key="PORT" value="${port}"/>
+		  <entry  key="SSID" value="${ssid}"/>
+		  <entry  key="DB_USER" value="${db_user}"/>
+		  <entry  key="DB_PASSWORD" value="${db_password}"/>
+		</propertyfile>
+	</target>
+	
+	<!-- Invoke the email class 	-->
+	<target name="replace.device" depends="compile,set.db.properties">
+		<java fork="yes" classname="com.s2d.main.ReplaceDevice" classpathref="build.classpath" classpath="${test-classes}">
+			<arg value="${actualDeviceName}"/>
+			<arg value="${replacementDeviceName}"/>			
+		</java>
+	</target>
+
+	<target name="add.device" depends="compile,set.db.properties">
+		<java fork="yes" classname="com.s2d.main.AddDevice" classpathref="build.classpath" classpath="${test-classes}">
+			<arg value="${deviceName}"/>
+			<arg value="${hostAddress}"/>			
+		</java>
+	</target>
+</project>
