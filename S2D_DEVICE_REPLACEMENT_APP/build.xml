@@ -44,7 +44,6 @@
 		</propertyfile>
 	</target>
 	
-	<!-- Invoke the email class 	-->
 	<target name="replace.device" depends="compile,set.db.properties">
 		<java fork="yes" classname="com.s2d.main.ReplaceDevice" classpathref="build.classpath" classpath="${test-classes}">
 			<arg value="${actualDeviceName}"/>
@@ -56,6 +55,12 @@
 		<java fork="yes" classname="com.s2d.main.AddDevice" classpathref="build.classpath" classpath="${test-classes}">
 			<arg value="${deviceName}"/>
 			<arg value="${hostAddress}"/>			
+		</java>
+	</target>
+	
+	<target name="remove.device" depends="compile,set.db.properties">
+		<java fork="yes" classname="com.s2d.main.RemoveDevice" classpathref="build.classpath" classpath="${test-classes}">
+			<arg value="${deviceName}"/>		
 		</java>
 	</target>
 </project>

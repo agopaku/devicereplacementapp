@@ -111,5 +111,23 @@ public class FiPayDatabaseManger {
 		} catch (EnoughDevicesFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void removeDevice(String deviceName) {
+		ArrayList<FiPaySledBean> listOfDevices = new ArrayList<>();
+
+		listOfDevices = FiPayDatabaseConnect.getDeviceList();
+		Map<String, FiPaySledBean> deviceMap = listOfDevices.stream().collect(Collectors.toMap(FiPaySledBean::getDeviceName, Function.identity()));
+
+		FiPaySledBean deviceToBeRemovedBean = deviceMap.get(deviceName);
+		try {
+			if(null == deviceToBeRemovedBean)			
+				throw new NoDeviceFoundException("Device "+deviceName+" Not Found");
+				
+			FiPayDatabaseConnect.removeDeviceInfo(deviceToBeRemovedBean);
+		}
+		catch (NoDeviceFoundException e) {
+			e.printStackTrace();
+		}
 	}	
 }
