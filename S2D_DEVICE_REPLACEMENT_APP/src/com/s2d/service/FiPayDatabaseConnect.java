@@ -180,7 +180,7 @@ public class FiPayDatabaseConnect
 			st.executeUpdate(deleteQuery);
 			System.out.println("Successfully Deleted device "+deviceBean.getDeviceName()+" details from table...");
 
-			FileUtils.addDeviceIDToDeletedDeviceInfo(deviceBean.getId());
+			FileUtils.addDeviceIDToDeletedDeviceInfo(deviceBean.getId(), deviceBean.getHostAddress());
 			st.close();
 		}
 		catch (Exception e)
